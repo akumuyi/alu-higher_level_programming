@@ -1,2 +1,5 @@
 #!/bin/bash
-python3 -c "$PYCODE"
+# The above line specifies that the script should be run using the Bash shell.
+echo "$PYCODE" | python3
+# This line uses the `echo` command to print the value of the `$PYCODE` environment variable and pipes it to the `python3` command.
+# The `python3` command then executes the Python code from the standard input.
