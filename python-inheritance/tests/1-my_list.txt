@@ -1,41 +1,49 @@
->>> ml = __import__('1-my_list').MyList
->>> L = ml()
->>> L.append(1)
->>> L.append(9)
->>> L.append(8)
->>> L.append(2)
->>> L.print_sorted()
-[1, 2, 8, 9]
->>> L = ml(['h', 'e', 'r', 'd'])
->>> L.print_sorted()
-['d', 'e', 'h', 'r']
->>> L = ml(['h', 'e', 'r', 'd'])
->>> print(L)
-['h', 'e', 'r', 'd']
->>> L = ml(["hello", "how", "are", "you"])
->>> L.print_sorted()
-['are', 'hello', 'how', 'you']
->>> L = ml(["hello", "there", 10, 'z'])
->>> try:
-...     L.print_sorted()
-... except:
-...     pass
-...
->>> L = ml([])
->>> L.print_sorted()
-[]
->>> L = ml([[1, 2], 'e', 5, 10])
->>> try:
-...     L.print_sorted()
-... except:
-...     pass
-...
->>> L = ml()
->>> L.print_sorted()
-[]
->>> L = ml([1, -2])
->>> print(L)
-[1, -2]
->>> L = ml([1, -2])
->>> L.print_sorted()
-[-2, 1]
+# Import the MyList class
+>>> MyList = __import__('1-my_list').MyList
+>>> my_list = MyList()
+>>> bool = isinstance(my_list, MyList)
+
+
+>>> bool = issubclass(MyList, list)
+
+
+>>> my_list1 = MyList()
+>>> my_list1.append(1)
+>>> my_list1.append(2)
+>>> my_list1.append(3)
+>>> value = str(my_list1)
+
+>>> my_list2 = MyList()
+>>> my_list2.append(1)
+>>> my_list2.append(2)
+>>> my_list2.append(3)
+
+
+>>> my_list3 = MyList()
+>>> my_list3.append(1)
+>>> my_list3.append(2)
+>>> my_list3.append(3)
+>>> value = my_list3.print_sorted(False)
+
+>>> my_list4 = MyList()
+>>> my_list4.append(3)
+>>> my_list4.append(2)
+>>> my_list4.append(1)
+>>> value = my_list4.print_sorted(False)
+
+>>> my_list5 = MyList()
+>>> my_list5.append(5)
+>>> my_list5.append(-3)
+>>> my_list5.append(1)
+>>> my_list5.append(-2)
+>>> value = my_list5.print_sorted(False)
+
+>>> my_list6 = MyList()
+>>> value = my_list6.print_sorted(False)
+
+>>> my_list7 = MyList()
+>>> my_list7.append(3)
+>>> my_list7.append(1)
+>>> my_list7.append(2)
+>>> my_list7.append(4)
+>>> value = my_list7.print_sorted(False)
