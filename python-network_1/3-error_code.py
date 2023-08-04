@@ -1,14 +1,13 @@
 #!/usr/bin/python3
-"""Sends a request to a given URL and displays the response body.
+"""
+Sends a request to a given URL and displays the response body.
 
 Usage: ./3-error_code.py <URL>
-  - Handles HTTP errors.
+       - Handles HTTP errors.
 """
-
-
-import urllib.request
-import urllib.error
 import sys
+import urllib.error
+import urllib.request
 
 def fetch_and_display_url_body(url):
     """
@@ -23,19 +22,19 @@ def fetch_and_display_url_body(url):
     Raises:
         urllib.error.HTTPError: If an HTTP error occurs (e.g., 404, 500).
     """
+    request = urllib.request.Request(url)
     try:
-        with urllib.request.urlopen(url) as response:
-            body = response.read().decode('utf-8')
-            print("Response Body:")
+        with urllib.request.urlopen(request) as response:
+            body = response.read().decode("ascii")
             print(body)
             return body
     except urllib.error.HTTPError as e:
-        print(f"Error code: {e.code}")
+        print("Error code: {}".format(e.code))
         return ""
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python3 script_name.py <url>")
+        print("Usage: ./3-error_code.py <URL>")
     else:
         url = sys.argv[1]
         fetch_and_display_url_body(url)
