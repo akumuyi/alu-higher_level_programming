@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Python script to fetch and display the body of a URL response.
+This module contains a Python script that takes in a URL, sends a request to the URL, and displays the body of the response.
 """
 
 import urllib.request
