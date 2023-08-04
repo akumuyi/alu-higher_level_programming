@@ -33,9 +33,11 @@ def fetch_and_display_url_body(url):
         print("Error code: {}".format(e.code))
         return ""
 
+
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: ./3-error_code.py <URL>")
     else:
         url = sys.argv[1]
         fetch_and_display_url_body(url)
+
