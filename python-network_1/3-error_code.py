@@ -40,4 +40,3 @@ if __name__ == "__main__":
     else:
         url = sys.argv[1]
         fetch_and_display_url_body(url)
-
