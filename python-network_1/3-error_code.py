@@ -9,6 +9,7 @@ import sys
 import urllib.error
 import urllib.request
 
+
 def fetch_and_display_url_body(url):
     """
     Fetches the body of a URL response and displays it.
@@ -38,4 +39,3 @@ if __name__ == "__main__":
     else:
         url = sys.argv[1]
         fetch_and_display_url_body(url)
-
