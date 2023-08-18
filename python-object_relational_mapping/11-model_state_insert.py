@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""get a  state."""
+"""Add a new state."""
 
 
 import sqlalchemy
@@ -15,9 +15,9 @@ if __name__ == "__main__":
     Base.metadata.create_all(eng)
     Session = sessionmaker(bind=eng)
     session = Session()
-    state = session.query(State).filter_by(name=argv[4]).first()
-    if state is not None:
-        print(str(state.id))
-    else:
-        print("Not found")
+    newstate = State(name='Louisiana')
+    session.add(newstate)
+    state = session.query(State).filter_by(name='Louisiana').first()
+    print(str(state.id))
+    session.commit()
     session.close()
