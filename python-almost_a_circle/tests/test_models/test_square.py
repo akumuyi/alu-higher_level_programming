@@ -1,98 +1,186 @@
 #!/usr/bin/python3
-"""unittest for the models/square.py
-"""
 
-import unittest
 import os
+import unittest
+from models.base import Base
 from models.square import Square
+from io import StringIO
+from unittest.mock import patch
 
 
 class TestSquare(unittest.TestCase):
-    """
-    Our unittest class
+    """Test class for square"""
 
-    inheriting from the unittest.TestCase
+    def test_instance(self):
+        """Test for instance"""
+        Base._Base__nb_objects = 0
+        s = Square(1)
+        s1 = Square(1, 2)
+        s2 = Square(1, 2, 3)
+        s3 = Square(1, 0)
+        s4 = Square(1, 2, 3, 4)
 
-    class.
-    """
-    def test_square_with_incomplete_correct_args(self):
-        self.base1 = Square(1)
-        self.base2 = Square(1, 2)
-        self.base3 = Square(1, 2, 3)
-        self.assertEqual(self.base1.id, 38)
-        self.assertEqual(self.base2.id, 39)
-        self.assertEqual(self.base3.id, 40)
+        self.assertEqual(s3.id, 4)
+        self.assertEqual(s4.id, 4)
+
+        with self.assertRaisesRegex(ValueError, "width must be > 0"):
+            s5 = Square(-1, 2)
         
-    def test_square_for_type_error(self):
-        with self.assertRaises(TypeError):
-            Square("1")
-        with self.assertRaises(TypeError):
-            Square(1, "2")
-        with self.assertRaises(TypeError):
-            Square(1, 2, "3")
+        with self.assertRaisesRegex(ValueError, "x must be >= 0"):
+              s6 = Square(1, -2)
 
-    def test_square_with_complete_correct_args(self):
-        self.assertEqual(Square(1, 2, 3, 4).id, 4)
+        with self.assertRaisesRegex(ValueError, "width must be > 0"):
+            s7 = Square(0, 2)
 
-    def test_square_for_value_error(self):
-        with self.assertRaises(ValueError):
-            Square(-1)
-        with self.assertRaises(ValueError):
-            Square(1, -2)
-        with self.assertRaises(ValueError):
-            Square(1, 2, -3)
-        with self.assertRaises(ValueError):
-            Square(0)
+        with self.assertRaisesRegex(ValueError, "y must be >= 0"):
+            s8 = Square(1, 2, -3)
 
-    def test_square_string_display(self):
-        self.assertEqual(Square(5).__str__(), "[Square] (32) 0/0 - 5")
-        self.assertEqual(Square(2, 2).__str__(), "[Square] (33) 2/0 - 2")
-        self.assertEqual(Square(3, 1, 3).__str__(), "[Square] (34) 1/3 - 3")
-        self.assertEqual(Square(3, 1, 3, 6).__str__(), "[Square] (6) 1/3 - 3")
+        with self.assertRaisesRegex(ValueError, "width must be > 0"):
+            s9 = Square(0)
 
-    def test_square_update(self):
-        s1 = Square(5)
-        self.assertEqual(s1.update(10), 0)
-        self.assertEqual(s1.update(1, 2), 0)
-        self.assertEqual(s1.update(1, 2, 3), 0)
-        self.assertEqual(s1.update(1, 2, 3, 4), 0)
-        self.assertEqual(s1.update(), 1)
-        self.assertEqual(s1.update(**{ 'id': 89 }), 0)
-        self.assertEqual(s1.update(**{ 'id': 89, 'size': 1 }), 0)
-        self.assertEqual(s1.update(**{ 'id': 89, 'size': 1, 'x': 2 }), 0)
-        self.assertEqual(s1.update(**{ 'id': 89, 'size': 1, 'x': 2, 'y': 3 }), 0)
-        self.assertEqual(s1.update(10, 3, x=1, size=2, y=3), 0)
+        with self.assertRaisesRegex(TypeError, "width must be an integer"):
+            s10 = Square("1")
 
-    def test_square_to_dictionary(self):
-        s1 = Square(10, 2, 1)
-        s2 = Square(1, 1)
-        self.assertDictEqual(s1.to_dictionary(), s1.to_dictionary())
-        self.assertDictEqual(s2.to_dictionary(), s2.to_dictionary())
+        with self.assertRaisesRegex(TypeError, "x must be an integer"):
+            s11 = Square(1, "2")
 
-    def test_square_save_to_file(self):
-        s1 = Square.save_to_file(None)
-        s2 = Square.save_to_file([])
-        s3 = Square.save_to_file([Square(1)])
-        self.assertEqual(s1, 1)
-        self.assertEqual(s2, 0)
-        self.assertEqual(s3, 0)
+        with self.assertRaisesRegex(TypeError, "y must be an integer"):
+            s12 = Square(1, 2, "3")
 
-    def test_square_create(self):
-        s1 = Square.create(**{ 'id': 89 })
-        s2 = Square.create(**{ 'id': 89, 'size': 1 })
-        s3 = Square.create(**{ 'id': 89, 'size': 1, 'x': 2 })
-        s4 = Square.create(**{ 'id': 89, 'size': 1, 'x': 2, 'y': 3 })
-        self.assertEqual(s1.id, 89)
-        self.assertEqual(s2.id, 89)
-        self.assertEqual(s3.id, 89)
-        self.assertEqual(s4.id, 89)
+    def test_area(self):
+        """Test for area function"""
+        Base._Base__nb_objects = 0
+        self.assertEqual(Square(2).area(), 4)
 
-    def test_square_load_to_file(self):
-        s1 = Square(10, 7, 2, 8)
-        list_squares_input = [s1]
-        Square.save_to_file(list_squares_input)
-        list_squares_exist = Square.load_from_file()
-        self.assertEqual(list_squares_exist[0].id, 8)
-        os.remove("Square.json")
-        list_squares_non_exist = Square.load_from_file()
-        self.assertEqual(list_squares_non_exist, [])
+    def test___str__(self):
+        """Test for __str__ function"""
+        Base._Base__nb_objects = 0
+        s = Square(1)
+        with patch('sys.stdout', new=StringIO()) as f:
+            print(s)
+            self.assertEqual(f.getvalue(), "[Square] (1) 0/0 - 1\n")
+
+    def test_display(self):
+        """Test for display function"""
+        u1 = Square(2)
+        u2 = Square(2, 2, 3)
+        with patch('sys.stdout', new=StringIO()) as f:
+            u1.display()
+            self.assertEqual(f.getvalue(), "##\n##\n")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            u2.display()
+            self.assertEqual(f.getvalue(), "\n\n\n  ##\n  ##\n")
+
+    def test_dictionary(self):
+        """Test for to_dictionary function"""
+        Base._Base__nb_objects = 0
+        s = Square(4)
+        s_dictionary = s.to_dictionary()
+        self.assertEqual(s_dictionary, {'x': 0, 'y': 0, 'id': 1, 'size': 4})
+
+    def test_update(self):
+        """Test for update function"""
+        Base._Base__nb_objects = 0
+        s = Square(1)
+        self.assertEqual(s.id, 1)
+
+        s.update(89)
+        self.assertEqual(s.id, 89)
+
+        s.update(89, 1)
+        self.assertEqual(s.size, 1)
+        self.assertEqual(s.id, 89)
+
+        s.update(89, 1, 2)
+        self.assertEqual(s.size, 1)
+        self.assertEqual(s.x, 2)
+        self.assertEqual(s.id, 89)
+
+        s.update(89, 1, 2, 3)
+        self.assertEqual(s.size, 1)
+        self.assertEqual(s.x, 2)
+        self.assertEqual(s.y, 3)
+        self.assertEqual(s.id, 89)
+
+        s.update(**{'id': 89})
+        self.assertEqual(s.id, 89)
+
+        s.update(**{'id': 89, 'size': 1})
+        self.assertEqual(s.size, 1)
+        self.assertEqual(s.id, 89)
+
+        s.update(**{'id': 89, 'size': 1, 'x': 2})
+        self.assertEqual(s.size, 1)
+        self.assertEqual(s.x, 2)
+        self.assertEqual(s.id, 89)
+
+        s.update(**{'id': 89, 'size': 1, 'x': 2, 'y': 3})
+        self.assertEqual(s.size, 1)
+        self.assertEqual(s.x, 2)
+        self.assertEqual(s.y, 3)
+        self.assertEqual(s.id, 89)
+
+    def test_create(self):
+        """Test for create function"""
+
+        c1 = Square.create(**{'id': 89})
+        self.assertEqual(c1.id, 89)
+
+        c2 = Square.create(**{'id': 89, 'size': 1})
+        self.assertEqual(c2.size, 1)
+        self.assertEqual(c2.id, 89)
+
+        c3 = Square.create(**{'id': 89, 'size': 1, 'x': 2})
+        self.assertEqual(c3.size, 1)
+        self.assertEqual(c3.x, 2)
+        self.assertEqual(c3.id, 89)
+
+        c4 = Square.create(**{'id': 89, 'size': 1, 
+        'x': 2, 'y': 3})
+        self.assertEqual(c4.size, 1)
+        self.assertEqual(c4.x, 2)
+        self.assertEqual(c4.y, 3)
+        self.assertEqual(c4.id, 89)
+
+    def test_save_to_file(self):
+        """Test for save to file function"""
+        Base._Base__nb_objects = 0
+
+        Square.save_to_file(None)
+        self.assertTrue(os.path.isfile("Square.json"))
+        with open("Square.json") as f:
+            self.assertEqual(f.read(), "[]")
+
+        Square.save_to_file([])
+        self.assertTrue(os.path.exists("Square.json"))
+        with open("Square.json") as f:
+            self.assertEqual(f.read(), "[]")
+            self.assertEqual(type(f.read()), str)
+
+        Square.save_to_file([Square(1)])
+        with open("Square.json") as f:
+            self.assertEqual(f.read(),
+            '[{"id": 1, "size": 1, "x": 0, "y": 0}]')
+
+    def test_save_to_file_empty(self):
+        """Test for save to file function"""
+        Square.save_to_file([])
+        self.assertTrue(os.path.exists("Square.json"))
+        with open("Square.json") as f:
+            self.assertEqual(f.read(), "[]")
+            self.assertEqual(type(f.read()), str)
+
+    def test_save_from_file(self):
+        """Test for save from file function"""
+        if os.path.exists("Square.json"):
+            os.remove("Square.json")
+
+        self.assertEqual(Square.load_from_file(), [])
+        Square.save_to_file([Square(2)])
+        file = Square.load_from_file()
+        self.assertEqual(type(file), list)
+        self.assertEqual(file[0].size, 2)
+
+if __name__ == '__main__':
+    unittest.main()
