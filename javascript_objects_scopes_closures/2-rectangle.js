@@ -1,12 +1,12 @@
 #!/usr/bin/node
-
-class Rectangle {
-  constructor(w, h) {
-    if (w <= 0 || h <= 0) {
-      return {}; // Create an empty object if w or h is not positive
+const Rectangle = class {
+  constructor (w, h) {
+    if (w <= 0 || w === undefined || h <= 0 || h === undefined) {
+      // This Block does nothing
+    } else {
+      this.width = w;
+      this.height = h;
     }
-    this.width = w;
-    this.height = h;
   }
-}
+};
 module.exports = Rectangle;
