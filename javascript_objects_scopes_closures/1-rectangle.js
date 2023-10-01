@@ -1,5 +1,5 @@
 #!/usr/bin/node
-class Rectangle {
+const Rectanle = class {
   constructor(w, h) {
     this.width = w;
     this.height = h;
