@@ -77,16 +77,6 @@ This repository contains a set of JavaScript scripts that cover various fundamen
 - **File**: `13-main.js`
 - **Description**: This script demonstrates importing and using a function named `add` from a separate module.
 
-## Usage
-
-To run any of these scripts, use the following command:
-
-```bash
-./filename.js
-```
-
-Replace `filename.js` with the name of the script you want to execute.
-
 ## Repository Information
 
 - **GitHub Repository**: `https://github.com/akumuyi/alu-higher_level_programming`
