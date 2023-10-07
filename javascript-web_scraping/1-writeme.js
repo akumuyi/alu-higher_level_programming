@@ -1,21 +1,23 @@
 #!/usr/bin/node
+const { argv } = require('process');
 const fs = require('fs');
+const closeFd = (fd) => {
+  fs.close(fd, (err) => {
+    if (err) console.log(err);
+  });
+};
 const writeFile = async (filePath, string) => {
-  process.emitWarning = (warning, ... args) => {
-    if (args[0] === 'ExperimentalWarning') {
-      return;
-    }
-    return process.emitWarning(warning, ... args);
-  };
   try {
-    await fs.promises.writeFile(filePath, string, 'utf-8');
-  } catch (error) {
-    console.error(error);
+    const fd = await fs.promises.open(filePath, 'w');
+    await fs.promises.write(fd, string, 'utf-8');
+    await closeFd(fd);
+  } catch (err) {
+    console.log(err);
   }
 };
 const main = async () => {
-  const filePath = process.argv[2];
-  const string = process.argv[3];
+  const filePath = argv[2];
+  const string = argv[3];
   if (!filePath || !string) {
     console.error('Usage: 1-writeme.js <file_path> <string>');
     return;
