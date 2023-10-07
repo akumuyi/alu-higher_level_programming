@@ -1,16 +1,14 @@
 #!/usr/bin/node
 const fs = require('fs');
 const writeFile = async (filePath, string) => {
-  process.emitWarning = (warning, ... args) => {
-    if (args[0] === 'ExperimentalWarning') {
-      return;
-    }
-    return process.emitWarning(warning, ... args);
-  };
   try {
     await fs.promises.writeFile(filePath, string, 'utf-8');
   } catch (error) {
-    console.error(error);
+    if (error.code === 'ENOENT') {
+      console.error('File does not exist:', filePath);
+    } else {
+      console.error(error);
+    }
   }
 };
 const main = async () => {
