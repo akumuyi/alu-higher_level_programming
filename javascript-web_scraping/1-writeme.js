@@ -1,13 +1,10 @@
 #!/usr/bin/node
 const { argv } = require('process');
-const fs = require('fs');
-const closeFd = async (fd) => {
-  await fs.promises.close(fd);
-};
+const fs = require('fs/promises');
 const writeFile = async (filePath, string) => {
-  const fd = await fs.promises.open(filePath, 'w');
-  await fs.promises.write(fd, string, 'utf-8');
-  await closeFd(fd);
+  const fd = await fs.open(filePath, 'w');
+  await fs.write(fd, string, 'utf-8');
+  await fs.close(fd);
 };
 const main = async () => {
   const filePath = argv[2];
@@ -19,7 +16,7 @@ const main = async () => {
   try {
     await writeFile(filePath, string);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 main();
