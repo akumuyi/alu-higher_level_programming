@@ -1,9 +1,14 @@
 #!/usr/bin/node
 const fs = require('fs');
 const writeFile = async (filePath, string) => {
+  process.emitWarning = (warning, ... args) => {
+    if (args[0] === 'ExperimentalWarning') {
+      return;
+    }
+    return process.emitWarning(warning, ... args);
+  };
   try {
     await fs.promises.writeFile(filePath, string, 'utf-8');
-    console.log(`Successfully wrote to ${filePath}`);
   } catch (error) {
     console.error(error);
   }
