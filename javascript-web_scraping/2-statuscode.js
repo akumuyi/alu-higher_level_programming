@@ -1,7 +1,8 @@
 #!/usr/bin/node
 const request = require('request');
+const { argv } = require('process');
 const main = async () => {
-  const url = process.argv[2];
+  const url = argv[2];
   if (!url) {
     console.error('Usage: 2-statuscode.js <url>');
     return;
