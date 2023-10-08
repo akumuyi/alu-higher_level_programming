@@ -1,25 +1,26 @@
 #!/usr/bin/node
+const { argv } = require('process');
 const fs = require('fs');
-const writeFile = async (filePath, string) => {
-  process.emitWarning = (warning, ... args) => {
-    if (args[0] === 'ExperimentalWarning') {
+
+function closeFd (fd) {
+  fs.close(fd, (err) => {
+    if (err) console.log(err);
+  });
+}
+
+if (argv[2]) {
+  fs.open(argv[2], 'w', (err, fd) => {
+    if (err) {
+      console.log(err);
       return;
     }
-    return process.emitWarning(warning, ... args);
-  };
-  try {
-    await fs.promises.writeFile(filePath, string, 'utf-8');
-  } catch (error) {
-    console.error(error);
-  }
-};
-const main = async () => {
-  const filePath = process.argv[2];
-  const string = process.argv[3];
-  if (!filePath || !string) {
-    console.error('Usage: 1-writeme.js <file_path> <string>');
-    return;
-  }
-  await writeFile(filePath, string);
-};
-main();
+    fs.write(fd, argv[3], (err, written, string) => {
+      if (err) {
+        console.log(err);
+      }
+      closeFd(fd);
+    });
+  });
+} else {
+  console.log('An error occurred no file(path) was given');
+}
