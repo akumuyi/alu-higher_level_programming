@@ -1,3 +1,4 @@
+#!/usr/bin/node
 // Select the header element using jQuery
 const header = $('header');
 
