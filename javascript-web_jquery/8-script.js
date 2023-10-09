@@ -1,3 +1,4 @@
+#!/usr/bin/node
 // Make an ajax request to fetch the movie titles
 $.ajax({
     url: "https://swapi-api.alx-tools.com/api/films/?format=json",
@@ -10,4 +11,4 @@ $.ajax({
         $('#list_movies').append($('<li>' + title + '</li>'));
       });
     }
-  });  
+  });
