@@ -1,3 +1,4 @@
+#!/usr/bin/node
 // Select the DIV#update_header element using jQuery
 const updateHeaderDiv = $('#update_header');
 
