@@ -1,3 +1,4 @@
+#!/usr/bin/node
 $(document).ready(function() {
     // Send an HTTP GET request to the API URL
     $.get('https://fourtonfish.com/hellosalut/?lang=fr', function(data) {
