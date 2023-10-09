@@ -1,3 +1,4 @@
+#!/usr/bin/node
 // Select the DIV#add_item element using jQuery
 const addItemDiv = $('#add_item');
 
